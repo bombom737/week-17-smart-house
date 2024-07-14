@@ -1,0 +1,15 @@
+#room-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.room-button{
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+}
+
+p{
+    position: relative;
+    top: 21px;
+}

@@ -1,0 +1,26 @@
+#room{
+    display: flex;
+}
+
+#room-container{
+    padding: 10px;  
+}
+
+#button-container{
+    padding: 10px;
+}
+
+#add-room-button{
+    height: 100px;
+    width: 100px; 
+    border-radius: 50%;
+    border: 5px solid gray;
+}
+
+#add-room-button:hover{
+    filter: brightness(125%);
+}
+
+.room-button:hover{
+    filter: brightness(125%);
+}
