@@ -15,6 +15,7 @@ export default function RoomPage() {
   const room = rooms.find(r => r.name === roomName);
 
   useEffect(() => {
+    //Load products from local storage, passing roomName to the dependency array
     const storedProducts = localStorage.getItem(`products-${roomName}`);
     if (storedProducts) {
       console.log(`Loaded products for ${roomName}:`, JSON.parse(storedProducts));
@@ -23,33 +24,42 @@ export default function RoomPage() {
   }, [roomName]);
 
   useEffect(() => {
+    //Update rooms's products
     if (initialRender.current) {
+      //Prevent the page from rendering more than once at mount, without this the product array will be set multiple times and get cleared
       initialRender.current = false;
       return;
     }
     console.log(`Saving products for ${roomName}:`, products);
     localStorage.setItem(`products-${roomName}`, JSON.stringify(products));
   }, [products, roomName]);
-
-  if (!room) {
-    return <div>Room not found</div>;
-  }
-
+  
   function goBack() {
     navigate('/');
   }
 
+  if (!room) {
+    //In case room doesn't exist
+    return <div id='not-found'>
+      <p>Room not found</p>
+      <button onClick={goBack}>Go back</button>
+      </div>;
+  }
+
   function addProduct(product) {
+    //Adds a product to room. This updates the products state, which causes useEffect to fire and save the changes to local storage
     const updatedProducts = [...products, { ...product, isOn: false }];
     console.log(`Adding product to ${roomName}:`, updatedProducts);
     setProducts(updatedProducts);
   }
 
   function closeForm() {
+     //Simply set  th showAddProduct state to false to stop displaying the addProduct component, an simple yet effective technique I learned through chat
     setShowAddProduct(false);
   }
 
   function toggleProductStatus(index) {
+    //Toggle between activating and deactivating a product and saving that status in local storage
     const updatedProducts = products.map((product, i) =>
       i === index ? { ...product, isOn: !product.isOn } : product
     );
@@ -58,12 +68,15 @@ export default function RoomPage() {
   }
 
   function removeProduct(index) {
+    //Removes a product from room. setProducts is used here so useEffect fires and save to local storage here as well
     const updatedProducts = products.filter((_, i) => i !== index);
     console.log(`Removing product from ${roomName}:`, updatedProducts);
     setProducts(updatedProducts);
   }
 
   function deleteRoom() {
+    //using window.confirm to make sure user wants to remove room, remove the room from both the rooms array and local storage, and navigate user to home page
+    //would definitely style my own confirm prompt instead of using window.confirm on a real app.
     const confirmed = window.confirm("Are you sure you want to delete this room?");
     if (confirmed) {
       removeRoom(room.id);

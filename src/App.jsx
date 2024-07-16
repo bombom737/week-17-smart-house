@@ -10,7 +10,7 @@ function App() {
     <RoomProvider>
       <Routes>
         <Route path='/' element={<HomePage />} />
-        <Route path='/addroom' element={<AddRoom />} />
+        <Route path='/add-room' element={<AddRoom />} />
         <Route path='/room/:roomName' element={<RoomPage />} />
       </Routes>
     </RoomProvider>
